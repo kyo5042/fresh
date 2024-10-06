@@ -1,0 +1,493 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// cesear
+
+def encrypt(text, shift):
+    result = ""
+
+    # Traverse through each character in the text
+    for i in range(len(text)):
+        char = text[i]
+
+        # Encrypt uppercase characters
+        if char.isupper():
+            result += chr((ord(char) + shift - 65) % 26 + 65)
+        # Encrypt lowercase characters
+        elif char.islower():
+            result += chr((ord(char) + shift - 97) % 26 + 97)
+        # Keep any non-alphabetic characters unchanged
+        else:
+            result += char
+
+    return result
+
+def decrypt(cipher_text, shift):
+    return encrypt(cipher_text, -shift)
+
+# Example usage
+text = input("Enter the message to encrypt: ")
+shift = int(input("Enter the shift number: "))
+
+encrypted_text = encrypt(text, shift)
+print(f"Encrypted Text: {encrypted_text}")
+
+decrypted_text = decrypt(encrypted_text, shift)
+print(f"Decrypted Text: {decrypted_text}")
+
+**/
+
+//mono
+
+import random
+alpha = "abcdefghijklmnopqrstuvwxyz"
+#Encrypts the plain text message
+def encrypt(original, key=None):
+    if key is None:
+        l = list(alpha)
+        random.shuffle(l)
+        key = "".join(l)
+        new = []
+        for letter in original:
+            new.append(key[alpha.index(letter)])
+    return ["".join(new), key]
+
+#Decrypts the encrypted message
+
+def decrypt(cipher, key=None):
+    if key is not None:
+        new = []
+        for letter in cipher:
+            new.append(alpha[key.index(letter)])
+    return "".join(new)
+text=input("Enter plain text:-")
+if text.isupper():
+    ch=text.lower()
+else:
+    ch=text
+e = encrypt(ch, None)
+print()
+print("Encrypted message and key :-")
+print(e) #Prints encrypted message
+print()
+print("Decrypted message is",decrypt(e[0], e[1])) #Decodes the message and prints it
+
+**/
+
+//vigener
+
+def generateKey(string, key): 
+  key = list(key) 
+  if len(string) == len(key): 
+    return(key) 
+  else: 
+    for i in range(len(string) -len(key)): 
+      key.append(key[i % len(key)]) 
+  return("" . join(key)) 
+  
+def encryption(string, key): 
+  encrypt_text = [] 
+  for i in range(len(string)): 
+    x = (ord(string[i]) +ord(key[i])) % 26
+    x += ord('A') 
+    encrypt_text.append(chr(x)) 
+  return("" . join(encrypt_text)) 
+
+def decryption(encrypt_text, key): 
+  orig_text = [] 
+  for i in range(len(encrypt_text)): 
+    x = (ord(encrypt_text[i]) -ord(key[i]) + 26) % 26
+    x += ord('A') 
+    orig_text.append(chr(x)) 
+  return("" . join(orig_text)) 
+
+if _name_ == "_main_": 
+  string = input("Enter the message: ")
+  keyword = input("Enter the keyword: ")
+  key = generateKey(string, keyword) 
+  encrypt_text = encryption(string,key) 
+  print("Encrypted message:", encrypt_text) 
+  print("Decrypted message:", decryption(encrypt_text, key))
+
+**/
+
+//vernam
+
+print ("#A python program to illustrate Vernam Cipher Technique.")
+
+def Encrypt(message,key):
+    message=str(message)
+    m=message.upper().replace("","")#Convert to upper case
+    encrypt=""
+    #if the key value is not a number,then run with kry=0
+    for i in range(len(m)):
+        letter=ord(m[i])-65#Letter now range 0-25
+        s=key.upper().replace("","")
+        l=ord(s[i])-65
+        #print("\n",l)
+        letter=(letter+l)#Alpha numeric+key mod25=0-25
+        #print(letter)
+        if letter>25:
+            letter=letter-26
+            letter+=65
+        else:
+            #letter=letter
+            letter+=65
+        encrypt+=chr(letter)#Concatenate message
+    return encrypt
+def Decrypt(message,key):
+    message=str(message)
+    m=message.upper().replace("","")#Convert to upper case
+    decrypt=""
+    #if the key value is not a number,then run with kry=0
+    for i in range(len(m)):
+        le=ord(m[i])-65#Letter now range 0-25
+        s=key.upper().replace("","")
+        letter=ord(s[i])-65
+        le=le-letter#Alpha numeric+key mod25=0-25
+        if le<0:
+            le=(le+26)
+            le+=65
+            
+        else:
+            le+=65
+        decrypt+=chr(le)#Concatenate message
+    return decrypt
+def Testing(Text,Key,E):
+    
+    Test = input("Do you want to Check what your Original Text was by Decrypting Message?\n\ni.e.(Type 'Yes'/'No')\n\n")
+
+    if Test == 'Yes':
+        Technique = 'Decrypt'
+        myKey = Key
+        Key = myKey
+        myMessage = E
+        Text = myMessage
+        D = Decrypt(Text, Key)
+        print ("Your Mode        : " + Technique)
+        print ("Your Cipher Text : " + Text)
+        print ("Key              : " + Key)
+        print ("Decrypted Text   : " + D)
+
+    elif Test == 'No':
+        print ("Thank You...!\n")
+
+    else:
+        print ("Please Try Again...!\n")
+        
+Technique = input("Enter Your Choice for Vernam Cipher Technique, i.e. Either Encrypt or Decrypt, Type ('Encrypt' or 'Decrypt').\n\n")
+
+if Technique =='Encrypt':
+    Text = input("Enter the Text You want to be Converted...\n\n")
+    Key = input("Enter The Key of your Choice\n\n")
+    E = Encrypt(Text,Key)
+    print ("Your Mode      : " + Technique)
+    print ("Your Text      : " + Text)
+    print ("Key            : " + Key)
+    print ("Encrypted Text : " + E)
+    Testing(Text,Key,E)
+elif Technique =='Decrypt':
+    Text = input("Enter the Vernam Cipher Text You want to be Decrypted...\n\n")
+    Key = input("Enter the Key provided to You...\n\n")
+    D = Decrypt(Text,Key)
+    print ("Your Mode                  : " + Technique)
+    print ("Your Vernam Cipher Text    : " + Text)
+    print ("Key                        : " + Key)
+    print ("Decrypted Text             : " + D)
+    
+else :
+    print ("Wrong Choice Please Try Again ... ")
+
+**//
+
+// rail
+
+def main():
+    # get the number of layers to rail encrypt
+    layers = int(input("Enter the number of layers: "))
+     # get the plain text
+    plain_text = input("Enter the plain text: ")
+     # encrypt the plain text
+    cipher_text = encrypt(layers, plain_text)
+    print("Encrypted text: " + cipher_text)
+def encrypt(layers, plain_text):
+     # remove all white spaces in text
+     plain_text = plain_text.replace(" ", "")
+     # change plain text to upper case
+     plain_text = plain_text.upper()
+     # divide plain text into layers number of strings
+     rail = [""] * layers
+     layer = 0
+     for character in plain_text:
+         rail[layer] += character
+         if layer >= layers - 1:
+             layer = 0
+         else:
+             layer += 1
+     cipher = "".join(rail)
+     return cipher
+if _name_ == '_main_':
+    main()
+
+*//
+
+// simple colomnar
+
+def split_len(seq, length):
+   return [seq[i:i + length] for i in range(0, len(seq), length)]
+def encode(key, plaintext):
+    order = {int(val): num for num, val in enumerate(key)  }
+    ciphertext = ''
+
+    for index in sorted(order.keys()):
+        for part in split_len(plaintext, len(key)):
+          try:
+              ciphertext += part[order[index]]
+          except IndexError:
+              continue
+    return ciphertext
+text=input("enter text ")
+columnkey=input("enter reading column sequence ")
+print("Encrypted text=",encode(columnkey, text))
+
+**/
+
+// diffe
+
+sharedPrime = 71
+sharedBase = 7
+aliceSecret = 5
+bobSecret = 12
+print("Publicly Shared Variables:")
+print(" Publicly Shared Prime:",sharedPrime)
+print(" Publicly Shared Base:",sharedBase)
+A = (sharedBase**aliceSecret)%sharedPrime
+print("\n Alice Sends Over Public Chanel:",A)
+B = (sharedBase**bobSecret)%sharedPrime
+print("Bob Sends Over Public Chanel:",B)
+print("\n----------------\n")
+print("Privstely Calculated Shared Secret.")
+aliceSharedSecret = (B**aliceSecret)%sharedPrime
+print(" Alice Shared Secret:",aliceSharedSecret)
+bobSharedSecret = (A**bobSecret)%sharedPrime
+print(" Bob Shared Secret:",bobSharedSecret)
+
+**/
+
+//mac
+
+import hashlib
+result = hashlib.md5(b'Ismile')
+result1 = hashlib.md5(b'Esmile')
+print("The byte equivalent of hash is:",end="")
+print(result.digest())
+print("The byte equivalent of hash is:",end="")
+print(result1.digest())
+
+**/
+
+//SHA
+
+import hashlib
+input_str = input("Enter the value to encode: ")
+result = hashlib.sha1(input_str.encode())
+print("The hexadecimal equivalent of SHA1 is:")
+print(result.hexdigest())
+
+**/
