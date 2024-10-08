@@ -388,4 +388,128 @@ custcase = {"Reservation":resstatus, "Time>30":timestatus}
 print("Manager predicts that Customer will :" , nb.predict(custcase) )
 
 
-//
+// water jug
+def water_jug_problem(jug1_cap, jug2_cap, target_amount):
+    # Define possible actions
+    actions = [('fill', 1), ('fill', 2), ('empty', 1), ('empty', 2), ('pour', 1, 2), ('pour', 2, 1)]
+    
+    # Create an empty set to store visited states
+    visited = set()
+    
+    # Initialize the queue with the starting state and an empty sequence of actions
+    queue = [(0, 0, [])]
+    
+    while queue:
+        j1, j2, seq = queue.pop(0)
+        
+        if (j1, j2) not in visited:
+            visited.add((j1, j2))
+            
+            if j1 == target_amount:
+                return seq
+            
+            for action in actions:
+                if action[0] == 'fill':
+                    if action[1] == 1:
+                        next_state = (jug1_cap, j2)
+                    else:
+                        next_state = (j1, jug2_cap)
+                
+                elif action[0] == 'empty':
+                    if action[1] == 1:
+                        next_state = (0, j2)
+                    else:
+                        next_state = (j1, 0)
+                
+                elif action[0] == 'pour':
+                    if action[1] == 1:
+                        amount = min(j1, jug2_cap - j2)
+                        next_state = (j1 - amount, j2 + amount)
+                    else:
+                        amount = min(j2, jug1_cap - j1)
+                        next_state = (j1 + amount, j2 - amount)
+                
+                if next_state not in visited:
+                    next_seq = seq + [action]
+                    queue.append((next_state[0], next_state[1], next_seq))
+    
+    return None
+
+# Example usage:
+result = water_jug_problem(4, 3, 2)
+print(result)
+
+
+// n queen
+import numpy as np
+
+# Global variable N to represent the size of the chessboard
+N = 4
+
+# Function to print the solution board
+def printSolution(board):
+    for i in range(N):
+        for j in range(N):
+            print(int(board[i][j]), '\t', end='')  # Use int to format output neatly
+        print()
+
+# Function to check if placing a queen at board[row][col] is safe
+def isSafe(board, row, col):
+    # Check the row on the left side
+    for i in range(col):
+        if board[row][i] == 1:
+            return False
+
+    # Check the upper diagonal on the left side
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    # Check the lower diagonal on the left side
+    for i, j in zip(range(row, N, 1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    return True
+
+# A recursive utility function to solve the N-Queens problem
+def solveNQUtil(board, col):
+    # Base case: If all queens are placed, return True
+    if col >= N:
+        return True
+
+    # Consider this column and try placing a queen in all rows one by one
+    for i in range(N):
+        if isSafe(board, i, col):
+            # Place this queen in board[i][col]
+            board[i][col] = 1
+
+            # Recur to place the rest of the queens
+            if solveNQUtil(board, col + 1):
+                return True
+
+            # If placing queen in board[i][col] doesn't lead to a solution, backtrack
+            board[i][col] = 0
+
+    # If the queen cannot be placed in any row in this column, return False
+    return False
+
+# Main function to solve the N-Queens problem using the utility function
+def solveNQ():
+    # Initialize the board as a 4x4 matrix filled with zeros
+    board = np.zeros((N, N))
+
+    print('Initial Board: \n', board)
+
+    # Use the utility function to solve the N-Queens problem
+    if not solveNQUtil(board, 0):
+        print("Solution doesn't exist")
+        return False
+
+    print("\nBoard after the N-Queen Solution: \n")
+    printSolution(board)
+    return True
+
+# Driver program to test the above function
+solveNQ()
+
