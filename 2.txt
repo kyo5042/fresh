@@ -1,0 +1,140 @@
+
+
+
+// simple addtion (1)
+client
+
+index.html
+<form action="addserv.jsp">
+            <input type="text" name="t1" value="">
+            <input type="text" name="t2" value="">
+            <input type="submit" value="ADDSERVICE">
+        </form>
+
+addserv.jsp
+<%
+            String s1=request.getParameter("t1");
+            String s2=request.getParameter("t2");
+            int p=Integer.parseInt(s1);
+            int q= Integer.parseInt(s2);
+        %>
+
+changes
+int x = p;
+int y = q;
+
+// f to c , c to f (2)
+
+service
+
+f to c
+Double c=(f-32)*0.6;
+        return c;
+c to f
+Double f =(c*1.8)+32;
+        return f;
+
+client
+
+index.html
+<form>
+        <br><input type="text" name="data"><br>
+        <input type="submit" value="F to C" name="ftoc" formaction="f_to_c.jsp"><br>
+        <br><input type="text" name="data"><br>
+        <input type="submit" value="C to F" name="ctof" formaction="c_to_f.jsp"><br>
+        </form>
+
+f_to_c.jsp
+String d=request.getParameter("data");
+        int dd=Integer.parseInt(d);
+double f = dd;
+
+c_to_f.jsp
+String d=request.getParameter("data");
+        int dd=Integer.parseInt(d);
+double c = dd;
+
+
+// r to d , d to r (3)
+
+service
+
+R to D
+double d =(r/83.46);
+        return d;
+
+D to R
+double r = d*83.46;
+        return r;
+
+client
+
+index.html
+<form>
+            <br><input type="text" name="data"><br>
+            <br><input type="submit" value="R to D" name="RtoD" formaction="r_to_d.jsp"><br>
+            <br><input type="text" name="data"><br>
+            <br><input type="submit" value="D to R" name="DtoR" formaction="d_to_r.jsp"><br>
+        </form>
+
+d_to_r.jsp
+String d1 =request.getParameter("data");
+        int d2=Integer.parseInt(d1);
+double d = d2;
+
+r_to_d.jsp
+String d=request.getParameter("data");
+        int dd=Integer.parseInt(d);
+double r = dd;
+
+// jax (4)
+
+newjsp.jsp
+
+<%
+            com.service.operation a1= new com.service.operation();
+            int d = a1.Add(5,10);
+            int e = a1.Mult(10,20);
+            int f = a1.Sub(30,10);
+            int g = a1.Div(100,50);
+            
+            out.println(d+"<br>");
+            out.println(e+"<br>");
+            out.println(f+"<br>");
+            out.println(g+"<br>");
+        %>
+
+// python file zeep(diffrent) platform
+
+.java
+return "The Indian rupees"+a+"in Dollars"+(a/83.17);
+
+.python
+from zeep import Client
+wsdl_url='http://localhost:8080/WebApplication1/CurencyConverter?wsdl'
+client=Client(wsdl_url)
+d=float(input("Enter the Currency in Indian Rupees:"))
+result=client.service.InrToDollar(d)
+print(result)
+
+
+//gross sall
+
+.java
+double da = 0.4*basic;
+        double hra = 0.2*basic;
+        return basic+da+hra;
+
+client
+index.html
+<form action="newjsp.jsp">
+            <br><input type ="text" name="Salary"/><br>
+            <br><input type="submit" value="submit"/><br>
+        </form>
+
+newjsp.jsp
+
+String s1 = request.getParameter("t1");
+        int p = Integer.parseInt(s1);
+
+double basic = p;
